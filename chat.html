@@ -4,7 +4,7 @@
 <button id="send" title="Send Message!" style="width: 100%; height: 30px;">Send Message</button>
 
 <script>
-  (function() {
+  function f() {
       const sendBtn = document.querySelector('#send');
       const messages = document.querySelector('#messages');
       const messageBox = document.querySelector('#messageBox');
@@ -16,7 +16,7 @@
       }
 
       function showMessage(message) {
-	  messages.textContent += `\n\n${message}`;
+	  messages.textContent += `\n\n`+message;
 	  messages.scrollTop = messages.scrollHeight;
 	  messageBox.value = '';
       }
@@ -30,11 +30,6 @@
       }
 
       function init() {
-	  if (ws) {
-              ws.onerror = ws.onopen = ws.onclose = null;
-              ws.close();
-	  }
-
 	  ws = new WebSocket('ws://localhost:6969');
 	  ws.onopen = onOpen;
 	  ws.onmessage = onMessage;
@@ -53,5 +48,7 @@
       sendBtn.onclick = onClick;
 
       init();
-  })();
+  }
+
+  f();
 </script>
