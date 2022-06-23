@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pong</title>
+    <script src="p5.js"></script>
+</head>
+
+<body style="background-color:Black;">
+    <script>
+        window.addEventListener("keydown", function (e) {
+            if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+                e.preventDefault();
+            }
+        }, false);
+        let paddles
+        function setup() {
+            createCanvas(screen.innerHeight, screen.innerWidth)
+            paddles = []
+            paddleX = [width / 15, width - width / 15]
+            for (let i = 0; i < 2; i++) {
+                paddles[i] = new paddle(paddleX[i])
+            }
+        }
+        function draw() {
+            background(0)
+            for (let i = 0; i < paddles.length; i++) {
+                paddles[i].draw()
+            }
+            if (keyIsDown(38)) {
+                paddles[1].y -= height / 100
+            }
+            if (keyIsDown(40)) {
+                paddles[1].y += height / 100
+            }
+
+        }
+
+
+
+
+
+
+
+
+        class paddle {
+            constructor(x) {
+                this.x = x
+                this.h = height / 8
+                this.y = height / 2 - this.h
+                this.w = width / 20
+            } draw() {
+                rect(this.x, this.y, this.w, this.h)
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+
+
+
+</html>
