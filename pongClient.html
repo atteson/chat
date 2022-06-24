@@ -8,8 +8,6 @@
 
 <body style="background-color:Black;">
     <script>
-        let height
-        let width
 
         window.addEventListener("keydown", function (e) {
             if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
@@ -18,11 +16,11 @@
         }, false);
 
         let paddles
-
+        let ws
         function setup() {
-            height = window.innerHeight
-            width = window.innerWidth
-            createCanvas(width - 20,height - 20)
+            ws = new WebSocket('ws://localhost:6969');
+            ws.onmessage = onMessage;
+            createCanvas(window.innerWidth - 20, window.innerHeight - 20)
             paddles = []
             paddleX = [width / 15, width - width / 15]
             for (let i = 0; i < 2; i++) {
@@ -34,12 +32,25 @@
             for (let i = 0; i < paddles.length; i++) {
                 paddles[i].draw()
             }
-            if (keyIsDown(38)) {
+
+            if (keyIsDown(38) && paddles[1].y > 0) {
                 paddles[1].y -= height / 100
+                ws.send(-height/100);
+
             }
-            if (keyIsDown(40)) {
+            if (keyIsDown(40) && paddles[1].y + paddles[1].h < height) {
                 paddles[1].y += height / 100
+                ws.send(height/100); 
+
             }
+
+        }
+        function onMessage(message) {
+            message.data.text().then(movePaddle);
+        }
+
+        function movePaddle(message) {
+            paddles[0].y += int(message)
 
         }
 
